@@ -5,6 +5,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.util.List;
+
 import static java.lang.Thread.sleep;
 
 public class LinkedInSearchTest{
@@ -29,20 +31,29 @@ public class LinkedInSearchTest{
         sleep(5000);
 
         WebElement launchpadTitle = driver.findElement(By.xpath("//*[@class='launchpad__title launchpad__title--is-open Sans-21px-black-85%-dense pb5 fl'][not(text()='')]"));
-        WebElement searchInput = driver.findElement(By.xpath("//*[@role='combobox']"));
-        WebElement searchButton = driver.findElement(By.xpath("//span[@class='svg-icon-wrap']//li-icon[@type='search-icon']"));
+        WebElement searchField = driver.findElement(By.xpath("//*[@role='combobox']"));
+        WebElement searchIcon = driver.findElement(By.xpath("//span[@class='svg-icon-wrap']//li-icon[@type='search-icon']"));
+
+        logInPage.waitUntilElementIsClickable(launchpadTitle);
 
         Assert.assertTrue(launchpadTitle.isDisplayed(), "Launchpad Title Message is not displayed");
-        String searchWord = "hr";
-        searchInput.sendKeys(searchWord);
-        searchButton.click();
+        String searchTerm = "HR";
+        searchField.sendKeys(searchTerm);
+        searchIcon.click();
 
         sleep(5000);
-        WebElement searchResultText = driver.findElement(By.xpath("//h3[contains(@class,'search-results__total')]"));
-        String actualTitle = driver.getTitle();
-        String expectedTitle = "\"" + searchWord +"\"" + " | Search | LinkedIn";
 
-        Assert.assertEquals(expectedTitle, actualTitle, "Search word is not correct");
-        Assert.assertTrue(searchResultText.isDisplayed(), "Search result text is not displayed");
+        List<WebElement> searchResultsList = driver.findElements(By.xpath("//li[contains(@class,'search-result__occluded-item')]"));
+
+        for(int i = 0; i < searchResultsList.size(); i++)
+        {
+            searchResultsList.get(i).click();
+            String searchItemName = searchResultsList.get(i).getText();
+
+            System.out.println(searchItemName);
+            Assert.assertTrue(searchItemName.contains(searchTerm), "Result item does not contain search term in " +(i+1)+" row");
+        }
+
+        Assert.assertEquals(searchResultsList.size(), 10, "There are displayed not 10 results");
     }
 }
