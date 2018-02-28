@@ -8,7 +8,7 @@ import org.testng.annotations.*;
 import static java.lang.Thread.sleep;
 
 public class LinkedInLoginTest {
-    WebDriver webDriver;
+    WebDriver driver;
 
     @BeforeClass
     public void beforeClass() {
@@ -20,54 +20,36 @@ public class LinkedInLoginTest {
 
     @BeforeMethod
     public void beforeTest() {
-        webDriver = new FirefoxDriver();
-        webDriver.navigate().to("https://www.linkedin.com/");
+        driver = new FirefoxDriver();
+        driver.navigate().to("https://www.linkedin.com/");
     }
 
     @AfterMethod
     public void afterTest() {
-        webDriver.quit();
+        driver.quit();
     }
 
     @Test
     public void successfulLoginTest() throws InterruptedException {
-        WebElement emailField = webDriver.findElement(By.xpath("//*[@id='login-email']"));
-        WebElement passwordField = webDriver.findElement(By.id("login-password"));
-        WebElement signInButton = webDriver.findElement(By.id("login-submit"));
-        String initialPageUrl = webDriver.getCurrentUrl();
-        String initialPageTitle = webDriver.getTitle();
+        LinkedinLogInPage logInPage = new LinkedinLogInPage(driver);
 
-        Assert.assertEquals(initialPageTitle, "LinkedIn: Log In or Sign Up", "Page title visible");
+        String initialPageUrl = logInPage.getPageUrl();
+        String initialPageTitle = logInPage.getPageTitle();
+        Assert.assertEquals(initialPageTitle, "LinkedIn: Log In or Sign Up", "Login page title is wrong");
 
-        passwordField.sendKeys("1q2w3e_4r5t");
-        emailField.sendKeys("iteatest@i.ua");
-        signInButton.click();
+        LinkedinBasePage homePage = logInPage.loginAs("iteatest@i.ua", "1q2w3e_4r5t");
+        Assert.assertTrue(homePage.isSighedIn(), "User is not signed in");
 
-        sleep(3000);
-
-        Assert.assertNotEquals(webDriver.getTitle(), initialPageTitle, "Page title is the same");
-        Assert.assertNotEquals(webDriver.getCurrentUrl(), initialPageUrl, "Page url is the same as initial page url");
-
-        WebElement launchpadTitle = webDriver.findElement(By.xpath("//*[@class='launchpad__title launchpad__title--is-open Sans-21px-black-85%-dense pb5 fl'][not(text()='')]"));
-        WebElement profileNavigationItem = webDriver.findElement(By.xpath("//*[@id='profile-nav-item']"));
-        WebElement identityWelcomeMessage = webDriver.findElement(By.xpath("//*[@data-control-name='identity_welcome_message'][not(text()='')]"));
-
-        Assert.assertTrue(launchpadTitle.isDisplayed(), "Launchpad Title Message is not displayed");
-        Assert.assertTrue(profileNavigationItem.isDisplayed(), "Profile navigation item is not displayed");
-        Assert.assertTrue(identityWelcomeMessage.isDisplayed(), "Profile welcome message is not displayed");
+        Assert.assertNotEquals(homePage.getPageTitle(), initialPageTitle, "Page title did not change after login");
+        Assert.assertNotEquals(homePage.getPageUrl(), initialPageUrl, "Page url did not change after login");
     }
 
     @Test
     public void negativeLoginTest() {
-        WebElement emailField = webDriver.findElement(By.xpath("//*[@id='login-email']"));
-        WebElement passwordField = webDriver.findElement(By.id("login-password"));
-        WebElement signInButton = webDriver.findElement(By.id("login-submit"));
+        LinkedinLogInPage logInPage = new LinkedinLogInPage(driver);
+        logInPage.loginAs("iteatest@i.ua", "1q2w3e_4r5t");
 
-        passwordField.sendKeys("12345");
-        emailField.sendKeys("test@ukr.net");
-        signInButton.click();
-
-        WebElement alertMassage = webDriver.findElement(By.xpath("//div[@id='global-alert-queue']//strong[not(text()='')]"));
+        WebElement alertMassage = driver.findElement(By.xpath("//div[@id='global-alert-queue']//strong[not(text()='')]"));
 
         Assert.assertTrue(alertMassage.isDisplayed(), "Alert massage is not displayed");
     }

@@ -1,13 +1,13 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class LinkedInLogInPage {
+public class LinkedinLogInPage extends LinkedinBasePage{
     WebDriver driver;
+    WebElement alertMassage;
 
-    public LinkedInLogInPage (WebDriver driver) {
+    public LinkedinLogInPage(WebDriver driver) {
+        super(driver);
         this.driver = driver;
     }
 
@@ -19,23 +19,19 @@ public class LinkedInLogInPage {
         emailField = driver.findElement(By.xpath("//*[@id='login-email']"));
         passwordField = driver.findElement(By.id("login-password"));
         signInButton = driver.findElement(By.id("login-submit"));
-
+        alertMassage = driver.findElement(By.xpath("//div[@id='global-alert-queue']//strong[not(text()='')]"));
     }
-    public void loginAs(String userName, String password) {
+    public LinkedinBasePage loginAs(String userName, String password) {
         initElements();
         waitUntilElementIsClickable(emailField, 5);
         passwordField.sendKeys(password);
         emailField.sendKeys(userName);
         signInButton.click();
+        if (isSighedIn())
+            return new LinkedinBasePage(driver);
+        else
+            return new LinkedinLogInPage(driver);
     }
 
-    public void waitUntilElementIsClickable(WebElement webElement) {
-        WebDriverWait wait = new WebDriverWait(driver, 20);
-        wait.until(ExpectedConditions.elementToBeClickable(webElement));
-    }
 
-    public void waitUntilElementIsClickable(WebElement webElement, int timeoutInSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.until(ExpectedConditions.elementToBeClickable(webElement));
-    }
 }
