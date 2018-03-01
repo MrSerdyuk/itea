@@ -30,8 +30,8 @@ public class LinkedInLoginTest {
     }
 
     @Test
-    public void successfulLoginTest() throws InterruptedException {
-        LinkedinLogInPage logInPage = new LinkedinLogInPage(driver);
+    public void successfulLoginTest() {
+        LinkedinLoginPage logInPage = new LinkedinLoginPage(driver);
 
         String initialPageUrl = logInPage.getPageUrl();
         String initialPageTitle = logInPage.getPageTitle();
@@ -46,11 +46,9 @@ public class LinkedInLoginTest {
 
     @Test
     public void negativeLoginTest() {
-        LinkedinLogInPage logInPage = new LinkedinLogInPage(driver);
-        logInPage.loginAs("iteatest@i.ua", "1q2w3e_4r5t");
+        LinkedinLoginPage logInPage = new LinkedinLoginPage(driver);
+        logInPage.loginAs("iteatest@i.ua", "1q2w3e");
 
-        WebElement alertMassage = driver.findElement(By.xpath("//div[@id='global-alert-queue']//strong[not(text()='')]"));
-
-        Assert.assertTrue(alertMassage.isDisplayed(), "Alert massage is not displayed");
+        Assert.assertTrue(logInPage.isNotSignedIn(), "Alert massage is not displayed");
     }
 }

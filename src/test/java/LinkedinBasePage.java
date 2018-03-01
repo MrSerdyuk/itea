@@ -31,7 +31,7 @@ public class LinkedinBasePage {
     }
 
     public void waitUntilElementIsClickable(WebElement webElement) {
-        waitUntilElementIsClickable(webElement, 5);
+        waitUntilElementIsClickable(webElement, 10);
     }
 
     public void waitUntilElementIsClickable(WebElement webElement, int timeoutInSeconds) {

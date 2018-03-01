@@ -25,7 +25,7 @@ public class LinkedInSearchTest{
 
     @Test
     public void basicSearchTest() throws InterruptedException {
-        LinkedinLogInPage logInPage = new LinkedinLogInPage(driver);
+        LinkedinLoginPage logInPage = new LinkedinLoginPage(driver);
         logInPage.loginAs("iteatest@i.ua", "1q2w3e_4r5t");
 
         sleep(5000);
