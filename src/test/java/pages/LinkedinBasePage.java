@@ -1,12 +1,14 @@
+package pages;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class BaseTestPage {
+public class LinkedinBasePage {
     WebDriver driver;
 
-    public BaseTestPage(WebDriver driver) {
+    public LinkedinBasePage(WebDriver driver) {
         this.driver = driver;
     }
 

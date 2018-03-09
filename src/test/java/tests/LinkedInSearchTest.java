@@ -1,9 +1,12 @@
+package tests;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
+import pages.LinkedinLandingPage;
 
 import java.util.List;
 
@@ -23,10 +26,9 @@ public class LinkedInSearchTest{
         driver.quit();
     }
 
-    @Test
     public void basicSearchTest() throws InterruptedException {
-        LinkedinLoginPage logInPage = new LinkedinLoginPage(driver);
-        logInPage.loginAs("iteatest@i.ua", "1q2w3e_4r5t");
+        LinkedinLandingPage logInPage = new LinkedinLandingPage(driver);
+        //logInPage.loginAs("iteatest@i.ua", "1q2w3e_4r5t");
 
         sleep(5000);
 
