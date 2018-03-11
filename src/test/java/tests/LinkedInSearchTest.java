@@ -1,24 +1,30 @@
 package tests;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
+import pages.LinkedinHomePage;
 import pages.LinkedinLandingPage;
-
-import java.util.List;
-
-import static java.lang.Thread.sleep;
+import pages.LinkedinSearchPage;
 
 public class LinkedInSearchTest{
     WebDriver driver;
+    LinkedinLandingPage linkedinLandingPage;
+    LinkedinHomePage linkedinHomePage;
+    LinkedinSearchPage linkedinSearchPage;
+    String searchTerm;
+
 
     @BeforeMethod
     public void beforeTest() {
         driver = new FirefoxDriver();
         driver.navigate().to("https://www.linkedin.com/");
+
+        linkedinLandingPage = new LinkedinLandingPage(driver);
+        linkedinHomePage = new LinkedinHomePage(driver);
+        linkedinSearchPage = new LinkedinSearchPage(driver);
+        searchTerm = "HR";
     }
 
     @AfterMethod
@@ -26,36 +32,22 @@ public class LinkedInSearchTest{
         driver.quit();
     }
 
-    public void basicSearchTest() throws InterruptedException {
-        LinkedinLandingPage logInPage = new LinkedinLandingPage(driver);
-        //logInPage.loginAs("iteatest@i.ua", "1q2w3e_4r5t");
+    @Test
+    public void basicSearchTest() {
+        LinkedinHomePage linkedinHomePage = linkedinLandingPage.positiveLogin("iteatest@i.ua", "1q2w3e_4r5t");
+        linkedinHomePage.waitUntilElementIsClickable(linkedinHomePage.userIcon, 5);
 
-        sleep(5000);
+        linkedinSearchPage.searchField.sendKeys(searchTerm);
+        linkedinSearchPage.searchIcon.click();
 
-        WebElement launchpadTitle = driver.findElement(By.xpath("//*[@class='launchpad__title launchpad__title--is-open Sans-21px-black-85%-dense pb5 fl'][not(text()='')]"));
-        WebElement searchField = driver.findElement(By.xpath("//*[@role='combobox']"));
-        WebElement searchIcon = driver.findElement(By.xpath("//span[@class='svg-icon-wrap']//li-icon[@type='search-icon']"));
+        linkedinSearchPage.waitUntilElementIsClickable(linkedinSearchPage.totalSearchResults);
 
-        logInPage.waitUntilElementIsClickable(launchpadTitle);
-
-        Assert.assertTrue(launchpadTitle.isDisplayed(), "Launchpad Title Message is not displayed");
-        String searchTerm = "HR";
-        searchField.sendKeys(searchTerm);
-        searchIcon.click();
-
-        sleep(5000);
-
-        List<WebElement> searchResultsList = driver.findElements(By.xpath("//li[contains(@class,'search-result__occluded-item')]"));
-
-        for(int i = 0; i < searchResultsList.size(); i++)
+        for(int i = 0; i < linkedinSearchPage.searchResultsList.size(); i++)
         {
-            searchResultsList.get(i).click();
-            String searchItemName = searchResultsList.get(i).getText();
-
-            System.out.println(searchItemName);
+            linkedinSearchPage.searchResultsList.get(i).click();
+            String searchItemName = linkedinSearchPage.searchResultsList.get(i).getText();
             Assert.assertTrue(searchItemName.contains(searchTerm), "Result item does not contain search term in " +(i+1)+" row");
         }
-
-        Assert.assertEquals(searchResultsList.size(), 10, "There are displayed not 10 results");
+        Assert.assertEquals(linkedinSearchPage.searchResultsList.size(), 10, "There are displayed not 10 results");
     }
 }

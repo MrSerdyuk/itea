@@ -8,7 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 public class LinkedinHomePage extends LinkedinBasePage {
 
     @FindBy(xpath = "//*[@id='profile-nav-item']")
-    private WebElement userIcon;
+    public WebElement userIcon;
 
     public LinkedinHomePage(WebDriver driver) {
         super(driver);
