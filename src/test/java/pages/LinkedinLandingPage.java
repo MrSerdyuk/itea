@@ -18,7 +18,7 @@ public class LinkedinLandingPage extends LinkedinBasePage {
     private WebElement signInButton;
 
     @FindBy(xpath = "//div[@id='global-alert-queue']//strong[not(text()='')]")
-    private WebElement alertMassage;
+    public WebElement alertMassage;
 
     public LinkedinLandingPage(WebDriver driver) {
         super(driver);
@@ -36,7 +36,7 @@ public class LinkedinLandingPage extends LinkedinBasePage {
         return loginAs(userName, password, LinkedinHomePage.class);
     }
 
-    public LinkedinBasePage negativeLogin(String userName, String password){
-        return loginAs(userName, password, LinkedinBasePage.class);
+    public LinkedinLandingPage negativeLogin(String userName, String password){
+        return loginAs(userName, password, LinkedinLandingPage.class);
     }
 }

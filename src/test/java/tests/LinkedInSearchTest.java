@@ -8,12 +8,15 @@ import pages.LinkedinHomePage;
 import pages.LinkedinLandingPage;
 import pages.LinkedinSearchPage;
 
+import java.util.ArrayList;
+
 public class LinkedInSearchTest{
+    public static final String SEARCH_TERM = "HR";
+
     WebDriver driver;
     LinkedinLandingPage linkedinLandingPage;
     LinkedinHomePage linkedinHomePage;
     LinkedinSearchPage linkedinSearchPage;
-    String searchTerm;
 
 
     @BeforeMethod
@@ -24,7 +27,6 @@ public class LinkedInSearchTest{
         linkedinLandingPage = new LinkedinLandingPage(driver);
         linkedinHomePage = new LinkedinHomePage(driver);
         linkedinSearchPage = new LinkedinSearchPage(driver);
-        searchTerm = "HR";
     }
 
     @AfterMethod
@@ -37,17 +39,14 @@ public class LinkedInSearchTest{
         LinkedinHomePage linkedinHomePage = linkedinLandingPage.positiveLogin("iteatest@i.ua", "1q2w3e_4r5t");
         linkedinHomePage.waitUntilElementIsClickable(linkedinHomePage.userIcon, 5);
 
-        linkedinSearchPage.searchField.sendKeys(searchTerm);
-        linkedinSearchPage.searchIcon.click();
+        LinkedinSearchPage linkedinSearchPage = linkedinHomePage.linkedinSearchPage(SEARCH_TERM);
 
         linkedinSearchPage.waitUntilElementIsClickable(linkedinSearchPage.totalSearchResults);
 
-        for(int i = 0; i < linkedinSearchPage.searchResultsList.size(); i++)
-        {
-            linkedinSearchPage.searchResultsList.get(i).click();
-            String searchItemName = linkedinSearchPage.searchResultsList.get(i).getText();
-            Assert.assertTrue(searchItemName.contains(searchTerm), "Result item does not contain search term in " +(i+1)+" row");
-        }
+        ArrayList elementIndexNotContainsSearchTerm = linkedinSearchPage.getElementIndexListNotContainsSearchTerm(SEARCH_TERM);
+        Assert.assertTrue(elementIndexNotContainsSearchTerm.isEmpty(),
+                "Result item does not contain search term in " +elementIndexNotContainsSearchTerm+" rows");
+
         Assert.assertEquals(linkedinSearchPage.searchResultsList.size(), 10, "There are displayed not 10 results");
     }
 }

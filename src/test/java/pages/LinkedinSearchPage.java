@@ -5,15 +5,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LinkedinSearchPage extends LinkedinBasePage {
-
-    @FindBy(xpath = "//*[@role='combobox']")
-    public WebElement searchField;
-
-    @FindBy(xpath = "//span[@class='svg-icon-wrap']//li-icon[@type='search-icon']")
-    public WebElement searchIcon;
 
     @FindBy(xpath = "//li[contains(@class,'search-result__occluded-item')]")
     public List<WebElement> searchResultsList;
@@ -24,5 +19,18 @@ public class LinkedinSearchPage extends LinkedinBasePage {
     public LinkedinSearchPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
+    }
+
+    public ArrayList getElementIndexListNotContainsSearchTerm(String searchTerm) {
+        ArrayList list = new ArrayList();
+
+        for (int i = 0; i < searchResultsList.size(); i++) {
+            searchResultsList.get(i).click();
+            String searchItemName = searchResultsList.get(i).getText();
+            if (!searchItemName.contains(searchTerm)) {
+                list.add(i+1);
+            }
+        }
+        return list;
     }
 }

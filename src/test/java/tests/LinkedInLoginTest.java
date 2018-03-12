@@ -10,6 +10,7 @@ import pages.LinkedinLandingPage;
 public class LinkedInLoginTest {
     WebDriver driver;
     LinkedinLandingPage linkedinLandingPage;
+    LinkedinHomePage linkedinHomePage;
 
     String initialPageUrl;
     String initialPageTitle;
@@ -50,7 +51,7 @@ public class LinkedInLoginTest {
 
     @Test
     public void negativeLoginTest() {
-        LinkedinHomePage linkedinHomePage = linkedinLandingPage.positiveLogin("iteatest@i.ua", "1q2w3e");
-        Assert.assertFalse(linkedinHomePage.isSighedIn(), "Alert massage is not displayed");
+        linkedinLandingPage.negativeLogin("iteatest@i.ua", "1q2w3e");
+        Assert.assertTrue(linkedinLandingPage.alertMassage.isDisplayed(), "Alert massage is not displayed");
     }
 }
