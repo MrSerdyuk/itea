@@ -11,26 +11,29 @@ import java.util.List;
 public class LinkedinSearchPage extends LinkedinBasePage {
 
     @FindBy(xpath = "//li[contains(@class,'search-result__occluded-item')]")
-    public List<WebElement> searchResultsList;
+    private List<WebElement> searchResultsList;
 
     @FindBy(xpath = "//h3[contains(@class, 'search-results__total')]")
-    public WebElement totalSearchResults;
+    private WebElement totalSearchResults;
 
     public LinkedinSearchPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
     }
 
-    public ArrayList getElementIndexListNotContainsSearchTerm(String searchTerm) {
-        ArrayList list = new ArrayList();
+    public List<String> getResults() {
+        waitUntilElementIsClickable(totalSearchResults);
+        List<String> list = new ArrayList<>();
 
         for (int i = 0; i < searchResultsList.size(); i++) {
             searchResultsList.get(i).click();
             String searchItemName = searchResultsList.get(i).getText();
-            if (!searchItemName.contains(searchTerm)) {
-                list.add(i+1);
-            }
+            list.add(searchItemName);
         }
         return list;
+    }
+
+    public List<WebElement> getSearchResultsList() {
+        return searchResultsList;
     }
 }

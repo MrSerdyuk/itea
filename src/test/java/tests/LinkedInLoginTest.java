@@ -6,11 +6,11 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.LinkedinHomePage;
 import pages.LinkedinLandingPage;
+import pages.LinkedinLoginPage;
 
 public class LinkedInLoginTest {
     WebDriver driver;
     LinkedinLandingPage linkedinLandingPage;
-    LinkedinHomePage linkedinHomePage;
 
     String initialPageUrl;
     String initialPageTitle;
@@ -42,7 +42,7 @@ public class LinkedInLoginTest {
     public void successfulLoginTest() {
         Assert.assertEquals(initialPageTitle, "LinkedIn: Log In or Sign Up", "Login page title is wrong");
 
-        LinkedinHomePage linkedinHomePage = linkedinLandingPage.positiveLogin("iteatest@i.ua", "1q2w3e_4r5t");
+        LinkedinHomePage linkedinHomePage = linkedinLandingPage.loginAs("iteatest@i.ua", "1q2w3e_4r5t");
         Assert.assertTrue(linkedinHomePage.isSighedIn(), "User is not signed in");
 
         Assert.assertNotEquals(linkedinLandingPage.getPageTitle(), initialPageTitle, "Page title did not change after login");
@@ -51,7 +51,8 @@ public class LinkedInLoginTest {
 
     @Test
     public void negativeLoginTest() {
-        linkedinLandingPage.negativeLogin("iteatest@i.ua", "1q2w3e");
-        Assert.assertTrue(linkedinLandingPage.alertMassage.isDisplayed(), "Alert massage is not displayed");
+        LinkedinLoginPage linkedinLoginPage = linkedinLandingPage.loginAs("iteatest@i.ua", "1q2w3e");
+        Assert.assertTrue(linkedinLoginPage.isNotSignedIn(), "Alert massage is not displayed");
+        Assert.assertNotEquals(linkedinLoginPage.getPageTitle(), initialPageTitle, "Page title did not change after login");
     }
 }

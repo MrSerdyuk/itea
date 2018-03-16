@@ -8,25 +8,17 @@ import pages.LinkedinHomePage;
 import pages.LinkedinLandingPage;
 import pages.LinkedinSearchPage;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class LinkedInSearchTest{
-    public static final String SEARCH_TERM = "HR";
+    public static final String SEARCH_TERM = "hr";
 
     WebDriver driver;
-    LinkedinLandingPage linkedinLandingPage;
-    LinkedinHomePage linkedinHomePage;
-    LinkedinSearchPage linkedinSearchPage;
-
 
     @BeforeMethod
     public void beforeTest() {
         driver = new FirefoxDriver();
         driver.navigate().to("https://www.linkedin.com/");
-
-        linkedinLandingPage = new LinkedinLandingPage(driver);
-        linkedinHomePage = new LinkedinHomePage(driver);
-        linkedinSearchPage = new LinkedinSearchPage(driver);
     }
 
     @AfterMethod
@@ -36,17 +28,15 @@ public class LinkedInSearchTest{
 
     @Test
     public void basicSearchTest() {
-        LinkedinHomePage linkedinHomePage = linkedinLandingPage.positiveLogin("iteatest@i.ua", "1q2w3e_4r5t");
-        linkedinHomePage.waitUntilElementIsClickable(linkedinHomePage.userIcon, 5);
+        LinkedinLandingPage linkedinLandingPage = new LinkedinLandingPage(driver);
+        LinkedinHomePage linkedinHomePage = linkedinLandingPage.loginAs("iteatest@i.ua", "1q2w3e_4r5t");
 
-        LinkedinSearchPage linkedinSearchPage = linkedinHomePage.linkedinSearchPage(SEARCH_TERM);
+        LinkedinSearchPage linkedinSearchPage = linkedinHomePage.getLinkedinSearchPage(SEARCH_TERM);
 
-        linkedinSearchPage.waitUntilElementIsClickable(linkedinSearchPage.totalSearchResults);
-
-        ArrayList elementIndexNotContainsSearchTerm = linkedinSearchPage.getElementIndexListNotContainsSearchTerm(SEARCH_TERM);
-        Assert.assertTrue(elementIndexNotContainsSearchTerm.isEmpty(),
-                "Result item does not contain search term in " +elementIndexNotContainsSearchTerm+" rows");
-
-        Assert.assertEquals(linkedinSearchPage.searchResultsList.size(), 10, "There are displayed not 10 results");
+        List<String> results = linkedinSearchPage.getResults();
+        for(String result : results) {
+            Assert.assertTrue(result.toLowerCase().contains(SEARCH_TERM),"Searchterm "+SEARCH_TERM+"not found in cart");
+        }
+        Assert.assertEquals(linkedinSearchPage.getSearchResultsList().size(), 10, "There are displayed not 10 results");
     }
 }
