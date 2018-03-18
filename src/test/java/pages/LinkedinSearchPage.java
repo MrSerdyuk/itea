@@ -27,7 +27,7 @@ public class LinkedinSearchPage extends LinkedinBasePage {
 
         for (int i = 0; i < searchResultsList.size(); i++) {
             searchResultsList.get(i).click();
-            String searchItemName = searchResultsList.get(i).getText();
+            String searchItemName = searchResultsList.get(i).getText().toLowerCase();
             list.add(searchItemName);
         }
         return list;

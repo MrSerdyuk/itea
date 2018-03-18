@@ -1,42 +1,11 @@
 package tests;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.LinkedinHomePage;
-import pages.LinkedinLandingPage;
 import pages.LinkedinLoginPage;
 
-public class LinkedInLoginTest {
-    WebDriver driver;
-    LinkedinLandingPage linkedinLandingPage;
-
-    String initialPageUrl;
-    String initialPageTitle;
-
-    @BeforeClass
-    public void beforeClass() {
-    }
-
-    @AfterClass
-    public void afterClass() {
-    }
-
-    @BeforeMethod
-    public void beforeTest() {
-        driver = new FirefoxDriver();
-        driver.navigate().to("https://www.linkedin.com/");
-        linkedinLandingPage = new LinkedinLandingPage(driver);
-
-        initialPageUrl = linkedinLandingPage.getPageUrl();
-        initialPageTitle = linkedinLandingPage.getPageTitle();
-    }
-
-    @AfterMethod
-    public void afterTest() {
-        driver.quit();
-    }
+public class LinkedInLoginTest extends LinkedinBaseTest{
 
     @Test
     public void successfulLoginTest() {
@@ -49,10 +18,30 @@ public class LinkedInLoginTest {
         Assert.assertNotEquals(linkedinLandingPage.getPageUrl(), initialPageUrl, "Page url did not change after login");
     }
 
-    @Test
-    public void negativeLoginTest() {
-        LinkedinLoginPage linkedinLoginPage = linkedinLandingPage.loginAs("iteatest@i.ua", "1q2w3e");
+    @DataProvider
+    public Object[][] negativeTestCredentialsReturnToLanding(){
+        return new Object[][]{
+                {"", ""}};
+    }
+
+    @Test(dataProvider = "negativeTestCredentialsReturnToLanding")
+    public void negativeTestCredentialsReturnToLanding(String email, String password) {
+        linkedinLandingPage.loginAs(email, password);
+        Assert.assertEquals(linkedinLandingPage.getPageTitle(), initialPageTitle, "Page title did not change after login");
+    }
+
+    @DataProvider
+    public Object[][] negativeTestCredentialsReturnToLoginPage(){
+        return new Object[][]{
+                {"xyzxyz", "xyz", "Please enter a valid email address", "The password you provided must have at least 6 characters"}};
+    }
+
+    @Test(dataProvider = "negativeTestCredentialsReturnToLoginPage")
+    public void negativeTestCredentialsReturnToLoginPage(String email, String password, String emailAlert, String passwordAlert) {
+        LinkedinLoginPage linkedinLoginPage = linkedinLandingPage.loginAs(email, password);
         Assert.assertTrue(linkedinLoginPage.isNotSignedIn(), "Alert massage is not displayed");
         Assert.assertNotEquals(linkedinLoginPage.getPageTitle(), initialPageTitle, "Page title did not change after login");
+
+        //создать 2 метода для возврата  String emailAlert, String passwordAlert и вссунуть их в ассерты
     }
 }
