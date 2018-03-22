@@ -2,7 +2,8 @@
 
 <suite name="Login tests" verbose="1" >
     <test name="Firefox driver" >
-        <parameter name="browserType" value="firefox" />
+        <parameter name="browserType" value="chrome" />
+        <parameter name="envURL" value="https://ua.linkedin.com/" />
         <classes>
             <class name="tests.LinkedInLoginTest" />
         </classes>
