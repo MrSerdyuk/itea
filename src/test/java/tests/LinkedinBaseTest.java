@@ -16,12 +16,10 @@ public class LinkedinBaseTest {
     LinkedinLandingPage linkedinLandingPage;
     String initialPageUrl;
     String initialPageTitle;
-    final String uaLinkedinURL = "https://ua.linkedin.com/";
-    final String baseLinkedinURL = "https://linkedin.com/";
 
     @Parameters({"browserType", "envURL"})
     @BeforeMethod
-    public void beforeTest(@Optional("") String browserType, @Optional("") String envURL) {
+    public void beforeTest(@Optional("chrome") String browserType, @Optional("https://ua.linkedin.com/") String envURL) {
 
         switch (browserType.toLowerCase()){
             case "firefox" :
@@ -37,12 +35,7 @@ public class LinkedinBaseTest {
                 driver = new InternetExplorerDriver();
         }
 
-        if(envURL.equals(uaLinkedinURL))
-        {
-            driver.navigate().to(uaLinkedinURL);
-        }
-        else
-            driver.navigate().to(baseLinkedinURL);
+        driver.navigate().to(envURL);
 
         linkedinLandingPage = new LinkedinLandingPage(driver);
 

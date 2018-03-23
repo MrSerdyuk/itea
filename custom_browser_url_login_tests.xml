@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Login tests" verbose="1" >
-    <test name="Firefox driver" >
+    <test name="Chrome driver and custom url" >
         <parameter name="browserType" value="chrome" />
         <parameter name="envURL" value="https://ua.linkedin.com/" />
         <classes>
