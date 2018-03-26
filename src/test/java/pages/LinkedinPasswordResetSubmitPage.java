@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,7 +21,7 @@ public class LinkedinPasswordResetSubmitPage extends LinkedinBasePage{
         try {
             isLoaded = resetLinkButton.isDisplayed();
         }
-        catch (NullPointerException e){
+        catch (NoSuchElementException e){
             isLoaded = false;
         }
         return isLoaded;
