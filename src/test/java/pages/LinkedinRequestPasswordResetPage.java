@@ -14,17 +14,30 @@ public class LinkedinRequestPasswordResetPage extends LinkedinBasePage{
     @FindBy(xpath = "//input[@id='btnSubmitResetRequest']")
     private WebElement submitButton;
 
+    /**
+     * Method initialize WebElements on Page
+     * @param driver
+     */
     public LinkedinRequestPasswordResetPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
     }
 
+    /**
+     * Method sends the letter to @param email
+     * @param userEmail is email
+     * @return new Page
+     */
     public LinkedinPasswordResetSubmitPage submitEmail(String userEmail) {
         userNameField.sendKeys(userEmail);
         submitButton.click();
         return new LinkedinPasswordResetSubmitPage(driver);
     }
 
+    /**
+     * Method waits for WebElement is visible on Page
+     * @return true if WebElement is on the Page
+     */
     public boolean isLoaded() {
         boolean isLoaded;
         try {

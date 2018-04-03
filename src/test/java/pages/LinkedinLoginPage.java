@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -29,24 +30,59 @@ public class LinkedinLoginPage extends LinkedinBasePage{
     private WebElement domainSuggestionMassage;
 
 
+    /**
+     * Method initialize WebElements on Page
+     * @param driver
+     */
     public LinkedinLoginPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
     }
 
+    /**
+     * Method checks the result of the negative LogIn attempt
+     * @return true if WebElement is displayed on Page
+     */
     public boolean isNotSignedIn() {
         return alertMassage.isDisplayed();
     }
 
+    /**
+     * Method gets error text of visible WebElement if there is email error
+     * @return text of WebElement
+     */
     public String getEmailErrorMassage() {
         return emailErrorMassage.getText();
     }
 
+    /**
+     * Method gets error text of visible WebElement if there is password error
+     * @return text of WebElement
+     */
     public String getPasswordErrorMassage() {
         return passwordErrorMassage.getText();
     }
 
+    /**
+     * Method gets error text of visible WebElement if there is email domain error
+     * @return true if WebElement is displayed on Page
+     */
     public boolean isDomainSuggestionDisplayed() {
         return domainSuggestionMassage.isDisplayed();
+    }
+
+    /**
+     * Method waits for WebElement is visible on Page
+     * @return true if WebElement is on the Page
+     */
+    public boolean isLoaded() {
+        boolean isLoaded;
+        try {
+            isLoaded = emailField.isDisplayed();
+        }
+        catch (NoSuchElementException e){
+            isLoaded = false;
+        }
+        return isLoaded;
     }
 }
