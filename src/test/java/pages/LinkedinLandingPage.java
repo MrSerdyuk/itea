@@ -39,10 +39,10 @@ public class LinkedinLandingPage extends LinkedinBasePage {
     }
 
     /**
-     * Method sets @params in WebElements and submits
-     * @param userName is parameter for WebElement
-     * @param password is parameter for WebElement
-     * @param <T>
+     * Constructor sets userName and password in WebElements and submits credentials
+     * @param userName is used to fill EmailField in login form
+     * @param password is used to fill PasswordField in login form
+     * @param <T> is used to work with different classes
      * @return three different Pages according to @params
      */
     public  <T> T loginAs(String userName, String password){

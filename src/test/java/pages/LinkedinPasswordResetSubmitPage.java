@@ -14,8 +14,9 @@ public class LinkedinPasswordResetSubmitPage extends LinkedinBasePage{
     WebElement resetLinkButton;
 
     /**
-     * Method initialize WebElements on Page
-     * @param driver
+     * Constructor of LinkedinPasswordResetSubmitPage class that takes WebDriver instance from LinkedinBasePage class
+     * and initialize LinkedinPasswordResetSubmitPage WebElements via PageFactory
+     * @param driver - WebDriver instance
      */
     public LinkedinPasswordResetSubmitPage(WebDriver driver) {
         super(driver);

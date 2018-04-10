@@ -16,6 +16,15 @@ public class LinkedinBaseTest {
     LinkedinLandingPage linkedinLandingPage;
     String initialPageUrl;
     String initialPageTitle;
+    
+    /**
+     * Method, with help of TestNG @Parameters and @Optional, sets the browserType and envURL, which will be run
+     * before @Test and navigates chosen URL;
+     * in this case, there are possible 3 browsers: firefox, chrome and default IE;
+     * then goes to linkedin.com and creates instance of LinkedinLandingPage class, gets page title and page URL
+     * @param browserType is a possible(firefox or default chrome) browser to be run
+     * @param envURL - is possible URL
+     */
 
     @Parameters({"browserType", "envURL"})
     @BeforeMethod

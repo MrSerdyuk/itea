@@ -18,8 +18,9 @@ public class LinkedinHomePage extends LinkedinBasePage {
     private WebElement searchIcon;
 
     /**
-     * Method initialize WebElements on Page
-     * @param driver
+     * Constructor of LinkedinHomePage class that takes WebDriver instance from LinkedinBasePage class
+     * and initialize LinkedinHomePage WebElements via PageFactory
+     * @param driver - WebDriver instance
      */
     public LinkedinHomePage(WebDriver driver) {
         super(driver);
